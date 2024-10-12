@@ -3,19 +3,183 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Capturador de URLs m3u8</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Jadiel TV HD</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background-color: black; /* Fundo preto */
+            color: white; /* Texto branco */
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            flex-direction: column;
+            font-family: Arial, sans-serif;
+            overflow-x: hidden;
+            overflow-y: auto; /* Permite rolagem se o conteúdo for maior que a tela */
+        }
+
+        .title-box {
+            width: 80%; /* Largura da caixa */
+            margin-top: 20px;
+            padding: 20px;
+            text-align: center;
+            font-size: 20px; /* Tamanho do título */
+            font-weight: bold;
+            color: white;
+            background: linear-gradient(to right, green, black); /* Gradiente de verde para preto */
+            border-radius: 5px; /* Bordas arredondadas */
+            position: sticky;
+            top: 0; /* Fixa o título no topo ao rolar a página */
+            z-index: 10;
+        }
+
+        .text-box, .date-time-box, .extra-box {
+            width: 80%; /* Largura da caixa */
+            margin-top: 20px;
+            padding: 20px;
+            text-align: center;
+            font-size: 18px; /* Tamanho do texto */
+            font-weight: bold;
+            color: white;
+            background: linear-gradient(to right, green, black); /* Gradiente de verde para preto */
+            border-radius: 5px; /* Bordas arredondadas */
+        }
+
+        .date-time-box span {
+            display: block; /* Exibe a data e hora em linhas separadas */
+        }
+
+        .video-box {
+            margin-top: 20px;
+            width: 80%;
+            text-align: center;
+            position: relative;
+        }
+
+        video, .error-message {
+            width: 100%;
+            height: auto;
+            border-radius: 5px; /* Bordas arredondadas para o vídeo */
+        }
+
+        .error-message {
+            display: none; /* A mensagem de erro será oculta inicialmente */
+            background: linear-gradient(to right, green, black); /* Fundo verde e preto */
+            color: white; /* Texto branco */
+            padding: 20px;
+            text-align: center;
+            font-size: 20px; /* Tamanho do texto de erro */
+            font-weight: bold;
+            border-radius: 5px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%); /* Centraliza horizontalmente e verticalmente */
+            width: 80%;
+        }
+
+        .button-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .back-button {
+            background-color: green;
+            color: white;
+            padding: 10px 20px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <script>
+        function updateDateTime() {
+            const now = new Date();
+            const date = now.toLocaleDateString('pt-BR');
+            const time = now.toLocaleTimeString('pt-BR');
+            document.getElementById('date-time').innerHTML = `<span>🗓️DATA: ${date}</span><span>⏰HORA: ${time}</span>`;
+        }
+
+        // Atualiza a cada segundo
+        setInterval(updateDateTime, 1000);
+
+        // Função para carregar e reproduzir o vídeo HLS
+        window.onload = function() {
+            var video = document.getElementById('video');
+            var errorMessage = document.getElementById('error-message');
+            var videoSrc = "https://live-b2.cf.dmcdn.net/sec2(oAUj_QOgjQ_sl2xvOEZOOD9Xevd-uf5igCv6pvn-qX9dD92yeDb-Ohjwi_-u9pZPjPYTB-QWIoy4jOFuWh3DMB3TexGNTDMu14931AfCg-mB-de7HQtyNliKdUywjUa0)/cloud/3/x83vbd6/s/live-480.m3u8";
+
+            // Verifica se a URL foi acessada diretamente
+            if (document.referrer === "") {
+                window.location.href = "error.html"; // Redireciona para a página de erro
+            }
+
+            if (Hls.isSupported()) {
+                var hls = new Hls();
+                hls.loadSource(videoSrc);
+                hls.attachMedia(video);
+                hls.on(Hls.Events.MANIFEST_PARSED, function() {
+                    video.play();
+                    video.volume = 1.0;  // Define o volume no máximo
+                });
+
+                // Quando ocorrer um erro, mostrar a mensagem de erro
+                hls.on(Hls.Events.ERROR, function(event, data) {
+                    if (data.fatal) {
+                        video.style.display = "none";
+                        errorMessage.style.display = "block"; // Mostrar a mensagem de erro
+                    }
+                });
+            } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                video.src = videoSrc;
+                video.addEventListener('loadedmetadata', function() {
+                    video.play();
+                    video.volume = 1.0;  // Define o volume no máximo
+                });
+
+                // Verificar erros no vídeo
+                video.addEventListener('error', function() {
+                    video.style.display = "none";
+                    errorMessage.style.display = "block"; // Mostrar a mensagem de erro
+                });
+            }
+        }
+    </script>
 </head>
 <body>
-    <div class="container">
-        <h1>Capturador de URLs m3u8</h1>
-        <input type="text" id="urlInput" placeholder="Digite a URL do site" />
-        <button id="captureButton">Capturar URLs m3u8</button>
-        <div id="resultContainer" class="result-container">
-            <h2>URLs Capturadas:</h2>
-            <ul id="urlList"></ul>
+    <div class="title-box">
+        JADIEL TV HD 
+    </div>
+
+    <div class="text-box">
+        CANAL DA BAND
+    </div>
+
+    <div class="date-time-box" id="date-time">
+        <!-- A data e hora serão atualizadas aqui -->
+    </div>
+
+    <!-- Tela de assistir TV -->
+    <div class="video-box">
+        <video id="video" controls autoplay></video>
+        <div id="error-message" class="error-message">
+            Presta atenção, se o canal não funcionou fale com o desenvolvedor Jadiel para ele resolver, ou espere o site atualizar.
         </div>
     </div>
-    <script src="script.js"></script>
+
+    <!-- Botão de voltar para página -->
+    <div class="button-container">
+        <button class="back-button" onclick="window.history.back();">♻️VOLTA♻️</button>
+    </div>
+
+    <!-- Nova caixa com texto abaixo do botão -->
+    <div class="extra-box">
+        Um canal de TV online que não exige antena nem sinal de TV tradicional, mas apenas uma conexão com a internet. Esses canais podem ser acessados diretamente através de sites ou aplicativos, sem a necessidade de equipamentos adicionais. Aproveite!
+    </div>
 </body>
-</html>
+    </html>
