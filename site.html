@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jadiel TV HD</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: black; /* Fundo preto */
+            color: white; /* Texto branco */
+            font-family: Arial, sans-serif; /* Fonte padrão */
+            height: 100vh; /* Altura total da tela */
+            overflow: hidden; /* Oculta a rolagem */
+        }
+
+        .fixed-container {
+            position: fixed; /* Mantém o conteúdo fixo na tela */
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: column; /* Organiza em coluna */
+            justify-content: flex-start; /* Alinhamento no início */
+            align-items: center; /* Centraliza horizontalmente */
+            overflow: auto; /* Permite rolagem se necessário */
+        }
+
+        .title-box {
+            width: 80%; /* Largura da caixa do título */
+            padding: 20px;
+            text-align: center;
+            border-radius: 10px;
+            background: linear-gradient(to right, green, black); /* Gradiente de verde para preto */
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px; /* Espaço abaixo da caixa */
+            box-shadow: 0 0 25px lime, 0 0 50px lime; /* Efeito de brilho verde mais forte */
+        }
+
+        .info-box {
+            width: 80%; /* Largura da caixa de informação */
+            padding: 20px;
+            text-align: center;
+            border-radius: 10px;
+            background: linear-gradient(to right, green, black); /* Gradiente de verde para preto */
+            color: white;
+            font-size: 20px; /* Tamanho da fonte igual ao título */
+            font-weight: bold; /* Negrito */
+            margin-bottom: 20px; /* Espaço abaixo da caixa */
+            box-shadow: 0 0 25px lime, 0 0 50px lime; /* Efeito de brilho verde mais forte */
+        }
+
+        .category-container {
+            width: 80%; /* Largura das caixas de categoria */
+            margin-bottom: 20px; /* Espaço entre as categorias */
+            display: flex;
+            flex-direction: column; /* Organiza em coluna */
+            align-items: center; /* Centraliza horizontalmente */
+        }
+
+        .category-box {
+            width: 100%; /* Largura da caixa da categoria */
+            padding: 20px;
+            border-radius: 10px;
+            background: linear-gradient(to right, green, black); /* Gradiente de verde para preto */
+            color: white;
+            margin-bottom: 10px; /* Espaço abaixo da caixa */
+            display: flex;
+            flex-direction: column; /* Organiza em coluna */
+            align-items: center; /* Centraliza horizontalmente */
+            box-shadow: 0 0 25px lime, 0 0 50px lime; /* Efeito de brilho verde mais forte */
+        }
+
+        .category-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px; /* Espaço entre o título e os botões */
+            text-align: center; /* Centraliza o título */
+        }
+
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* Cria 3 colunas */
+            grid-gap: 30px; /* Espaçamento entre os botões */
+            width: 100%; /* A largura da grade ocupa toda a caixa */
+        }
+
+        .link-button {
+            background: linear-gradient(to right, green, black); /* Gradiente de verde para preto */
+            color: white;
+            padding: 10px;
+            text-decoration: none;
+            border-radius: 10px;
+            border: none;
+            text-align: center;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100px; /* Altura fixa para os botões */
+            width: 100%; /* Largura total do botão */
+            box-shadow: 0 0 25px lime, 0 0 50px lime; /* Efeito de brilho verde mais forte */
+        }
+
+        .link-button img {
+            max-width: 80%; /* Limita a largura da imagem */
+            max-height: 80%; /* Limita a altura da imagem */
+        }
+
+        .link-button:hover {
+            background: linear-gradient(to right, black, green); /* Inverte as cores no hover */
+            box-shadow: 0 0 30px lime, 0 0 60px lime; /* Aumenta o brilho no hover */
+        }
+    </style>
+</head>
+<body>
+    <div class="fixed-container">
+        <div class="title-box">
+            JADIEL TV HD 
+        </div>
+        
+        <!-- Nova caixa de informação abaixo do título -->
+        <div class="info-box">
+            CANAIS DE TV ABAIXO
+        </div>
+
+        <!-- Categoria Esporte -->
+        <div class="category-container">
+            <div class="category-box">
+                <div class="category-title">CANAIS ABERTO</div>
+                <div class="button-grid">
+                    <a href="globo.html" class="link-button"><img src="globo.png" alt="canal"></a>
+                    <a href="sbt.html" class="link-button"><img src="sbt.png" alt="canal2"></a>
+                    <a href="band.html" class="link-button"><img src="band.png" alt="canal 3"></a>
+                    <a href="recor.html" class="link-button"><img src="recor.png" alt="canal3"></a>
+                    <a href="redetv.html" class="link-button"><img src="redetv.png" alt="canal3"></a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Categoria Canais Abertos -->
+        <div class="category-container">
+            <div class="category-box">
+                <div class="category-title">CANAIS DE ESPORTE</div>
+                <div class="button-grid">
+                    <a href="https://canal1.com" class="link-button"><img src="premiere.png" alt="Canal 1"></a>
+                    <a href="https://canal2.com" class="link-button"><img src="espn.png" alt="Canal 2"></a>
+                    <a href="https://canal3.com" class="link-button"><img src="canal3.png" alt="Canal 3"></a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Categoria Animes -->
+        <div class="category-container">
+            <div class="category-box">
+                <div class="category-title">CANAIS DE ANIMES</div>
+                <div class="button-grid">
+                    <a href="https://anime1.com" class="link-button"><img src="anime1.png" alt="Anime 1"></a>
+                    <a href="https://anime2.com" class="link-button"><img src="anime2.png" alt="Anime 2"></a>
+                    <a href="https://anime3.com" class="link-button"><img src="anime3.png" alt="Anime 3"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

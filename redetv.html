@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jadiel TV HD</title>
+    <style>
+                body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background-color: black; /* Fundo preto */
+            color: white; /* Texto branco */
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            flex-direction: column;
+            font-family: Arial, sans-serif;
+            overflow-x: hidden;
+            overflow-y: auto; /* Permite rolagem se o conteúdo for maior que a tela */
+        }
+
+        .title-box {
+            width: 80%; /* Largura da caixa */
+            margin-top: 20px;
+            padding: 20px;
+            text-align: center;
+            font-size: 20px; /* Tamanho do título */
+            font-weight: bold;
+            color: white;
+            background: linear-gradient(to right, green, black); /* Gradiente de verde para preto */
+            border-radius: 5px; /* Bordas arredondadas */
+            position: sticky;
+            top: 0; /* Fixa o título no topo ao rolar a página */
+            z-index: 10;
+            box-shadow: 0 0 15px #00ff00, 0 0 30px #00ff00; /* Aumento do efeito de brilho */
+        }
+
+        .text-box, .date-time-box, .extra-box {
+            width: 80%; /* Largura da caixa */
+            margin-top: 20px;
+            padding: 20px;
+            text-align: center;
+            font-size: 18px; /* Tamanho do texto */
+            font-weight: bold;
+            color: white;
+            background: linear-gradient(to right, green, black); /* Gradiente de verde para preto */
+            border-radius: 5px; /* Bordas arredondadas */
+            box-shadow: 0 0 15px #00ff00, 0 0 30px #00ff00; /* Aumento do efeito de brilho */
+        }
+
+        .date-time-box span {
+            display: block; /* Exibe a data e hora em linhas separadas */
+        }
+
+        .video-box {
+            margin-top: 20px;
+            width: 80%;
+            text-align: center;
+            position: relative;
+        }
+
+        video, .error-message {
+            width: 100%;
+            height: auto;
+            border-radius: 5px; /* Bordas arredondadas para o vídeo */
+        }
+
+        .error-message {
+            display: none; /* A mensagem de erro será oculta inicialmente */
+            background: linear-gradient(to right, green, black); /* Fundo verde e preto */
+            color: white; /* Texto branco */
+            padding: 20px;
+            text-align: center;
+            font-size: 20px; /* Tamanho do texto de erro */
+            font-weight: bold;
+            border-radius: 5px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%); /* Centraliza horizontalmente e verticalmente */
+            width: 80%;
+            box-shadow: 0 0 15px #00ff00, 0 0 30px #00ff00; /* Aumento do efeito de brilho */
+        }
+
+        .button-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .back-button {
+            background-color: green;
+            color: white;
+            padding: 10px 20px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00; /* Efeito de brilho */
+}
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <script>
+        function updateDateTime() {
+            const now = new Date();
+            const date = now.toLocaleDateString('pt-BR');
+            const time = now.toLocaleTimeString('pt-BR');
+            document.getElementById('date-time').innerHTML = `<span>🗓️DATA: ${date}</span><span>⏰HORA: ${time}</span>`;
+        }
+
+        // Atualiza a cada segundo
+        setInterval(updateDateTime, 1000);
+
+        // Função para carregar e reproduzir o vídeo HLS
+        window.onload = function() {
+            var video = document.getElementById('video');
+            var errorMessage = document.getElementById('error-message');
+            var videoSrc = "https://cfd-v4-service-channel-stitcher-use1-1.prd.pluto.tv/v2/stitch/hls/channel/6048fc47a44e540007745d2b/master.m3u8?advertisingId=&appName=web&appVersion=9.4.0-9ca51ca10c3047fbafa7297708f146243146d125&app_name=web&clientDeviceType=0&clientID=4a3decd3-089c-4ffb-9c48-f7ca86f1b404&clientModelNumber=1.0.0&country=BR&deviceDNT=false&deviceId=4a3decd3-089c-4ffb-9c48-f7ca86f1b404&deviceLat=-12.7600&deviceLon=-39.4300&deviceMake=yandexbrowser&deviceModel=web&deviceType=web&deviceVersion=24.9.1&marketingRegion=BR&serverSideAds=false&sessionID=98b7d31b-88da-11ef-983e-dadae301d6bd&sid=98b7d31b-88da-11ef-983e-dadae301d6bd&userId=&jwt=eyJhbGciOiJIUzI1NiIsImtpZCI6IjkxZDkwMTcxLTEyMWItNDViMy04NTkzLTA3NzBhNWM1MjFhZSIsInR5cCI6IkpXVCJ9.eyJzZXNzaW9uSUQiOiI5OGI3ZDMxYi04OGRhLTExZWYtOTgzZS1kYWRhZTMwMWQ2YmQiLCJjbGllbnRJUCI6IjE5MC44OS43NC4yMTkiLCJjaXR5IjoiQ2FzdHJvIEFsdmVzIiwicG9zdGFsQ29kZSI6IjQ0NTAwLTk1OSIsImNvdW50cnkiOiJCUiIsImRtYSI6NzYxMTMsImFjdGl2ZVJlZ2lvbiI6IkJSIiwiZGV2aWNlTGF0IjotMTIuNzYwMDAwMjI4ODgxODM2LCJkZXZpY2VMb24iOi0zOS40MzAwMDAzMDUxNzU3OCwicHJlZmVycmVkTGFuZ3VhZ2UiOiJwdCIsImRldmljZVR5cGUiOiJ3ZWIiLCJkZXZpY2VWZXJzaW9uIjoiMjQuOS4xIiwiZGV2aWNlTWFrZSI6InlhbmRleGJyb3dzZXIiLCJkZXZpY2VNb2RlbCI6IndlYiIsImFwcE5hbWUiOiJ3ZWIiLCJhcHBWZXJzaW9uIjoiOS40LjAtOWNhNTFjYTEwYzMwNDdmYmFmYTcyOTc3MDhmMTQ2MjQzMTQ2ZDEyNSIsImNsaWVudElEIjoiNGEzZGVjZDMtMDg5Yy00ZmZiLTljNDgtZjdjYTg2ZjFiNDA0IiwiY21BdWRpZW5jZUlEIjoiIiwiaXNDbGllbnRETlQiOmZhbHNlLCJ1c2VySUQiOiIiLCJsb2dMZXZlbCI6IkRFRkFVTFQiLCJ0aW1lWm9uZSI6IkFtZXJpY2EvQmFoaWEiLCJzZXJ2ZXJTaWRlQWRzIjpmYWxzZSwiZTJlQmVhY29ucyI6ZmFsc2UsImZlYXR1cmVzIjp7Im11bHRpUG9kQWRzIjp7ImVuYWJsZWQiOnRydWV9fSwiZm1zUGFyYW1zIjp7ImZ3VmNJRDIiOiI0YTNkZWNkMy0wODljLTRmZmItOWM0OC1mN2NhODZmMWI0MDQiLCJmd1ZjSUQyQ29wcGEiOiI0YTNkZWNkMy0wODljLTRmZmItOWM0OC1mN2NhODZmMWI0MDQiLCJjdXN0b21QYXJhbXMiOnsiZm1zX2xpdmVyYW1wX2lkbCI6IiIsImZtc19lbWFpbGhhc2giOiIiLCJmbXNfc3Vic2NyaWJlcmlkIjoiIiwiZm1zX2lmYSI6IiIsImZtc19pZGZ2IjoiIiwiZm1zX3VzZXJpZCI6IjRhM2RlY2QzLTA4OWMtNGZmYi05YzQ4LWY3Y2E4NmYxYjQwNCIsImZtc192Y2lkMnR5cGUiOiJ1c2VyaWQiLCJmbXNfcmFtcF9pZCI6IiIsImZtc19oaF9yYW1wX2lkIjoiIiwiZm1zX2JpZGlkdHlwZSI6IiIsIl9md18zUF9VSUQiOiIiLCJmbXNfcnVsZWlkIjoiMTAwMDksMTAwMDMsMTAwMDAifX0sImRybSI6eyJuYW1lIjoid2lkZXZpbmUiLCJsZXZlbCI6IkwxIn0sImlzcyI6ImJvb3QucGx1dG8udHYiLCJzdWIiOiJwcmk6djE6cGx1dG86ZGV2aWNlczpCUjpOR0V6WkdWalpETXRNRGc1WXkwMFptWmlMVGxqTkRndFpqZGpZVGcyWmpGaU5EQTAiLCJhdWQiOiIqLnBsdXRvLnR2IiwiZXhwIjoxNzI4ODUyMTkxLCJpYXQiOjE3Mjg3NjU3OTEsImp0aSI6IjAxZjRjYWY2LWZjOTUtNDc4MC1hYzU5LWYwNmQ5MmU2OTFmZSJ9.wTspYQEdLD3DjewYby7wIFvXm7RWWyzA2QsiGGpK2ao&masterJWTPassthrough=true&includeExtendedEvents=true&paln=AQzzBGQEB5wAc_346iu2quJtD2zNP4_kKXovRoJBVqQf7DZrX20fVqwiIp05LBRwygBHLbE_bO6p-7X_01unpiiz-RlYWWfA2JnpQwAz26tSfeok3BGqXP5gtQZBPq9BjHWdyn0_mY_g-NQxGxJ5yNd0rwdqQE7Q8QFXb_NTLuAk06ndTrYduQcQCpTJSW9Op7LqaCgXXK_SahrsFBRaXEO-U3LU_8aiszUIV3EQNVgdtAKcjr9vY7W2qxQxtXL5kiAnRkmLnYR5rcRJLASbT-oPv3Vnigli0xn6DZY0dObISyxArRXc1p8cJvvFA7L8Hm3swiORrakDZ-cRemCE_SegOwmUlpC9Qi1ttJrS0e7rJlpZChrLTTCAL5WROYlYGRxIGvVWg2pChtNmTXqjQyOqWsvpD_e4-K1HYhX3XjqNOdMfXNqdtJr5JSLbW5LLDPcnwOb4VDirQ05s61iP0-c2NRq2Bb9jpq881Etbb160MtMvU0PnW6m-2oHDfOKiRNhvLmbPpNNNSR44NcxLBdcGwg9WQkOQ-ZBcrRB1ujTjUT5ZblUv1lGVNYqZf-aPGrPwOB9yCT2VYfr6qKZbLp3nGK4VI-O6ve4_Rd-rsWJzwG4qMexEAbaGkqVwITz1TP3SgLT4U6m7C50IgGSxFuWw7zFO-EfzUXqCJH03S_kLPHZ1fcNzSPKnG2VnLyG7uojzrVq5ciIrii-kA5aHax6PnsOcrfUSEeQfFd9FA89CskeDPReKgw6kFNhCqVkBOLieNfH7co63I1eFaqjPQXP4F-ee3G-f8uOU4l9el44YplfriGWQ7hlp9QJSlaZZWtyFNSMIJcl7Cl4Kv-n2nDUmOPJUfMNHCtyIucCYx1WpBn5m8N3GJ9ezt41RRtiZDUvFl7jray38FErUeqJzu_pq0ozfmEyBNw1hl8NvoiRKkI_rnmsPLe2GprkaX611PQ2W2G8MN83JPG_nbu8qfbGkG9r51PmfEUOJiKMgsNyHtrA6HwycRr_l27v7EXL_H2H--4kTf6XDiWFlDJwqY7gtrCyCuDc9NG6HpH7mKRO-a7s4gSfIdIh8vLPl2Dai1hi2iM4HVS01Het5GpEzHDf4jP6520nwrrkv5kpDHNc5iKgn10Yj9J56JqsVJNgmupb2fNEctoz6zXtnav1e0VRqGWhl4pk8jci6HMrnFfWHr3xmrEy6DPpYNvd0oM-7J9Gk7NhKTwHLULRR9Khn-3-_JkZR_tQqqeOfDoVdwNxsLHIYOKhAXuFt8j9WzWA4coZKrpCkXlurV_sINN_HNQBZSSSI9h2jX6pqf8JDGc-_&eventVOD=false&CMCD=mtp%3D500%2Cot%3Dm%2Csf%3Dh%2Csid%3D%222a58622a-0d31-4098-80b8-e237c6e7d755%22%2Csu";
+            
+            if (Hls.isSupported()) {
+                var hls = new Hls();
+                hls.loadSource(videoSrc);
+                hls.attachMedia(video);
+                hls.on(Hls.Events.MANIFEST_PARSED, function() {
+                    video.play();
+                    video.volume = 1.0;  // Define o volume no máximo
+                });
+
+                // Quando ocorrer um erro, mostrar a mensagem de erro
+                hls.on(Hls.Events.ERROR, function(event, data) {
+                    if (data.fatal) {
+                        video.style.display = "none";
+                        errorMessage.style.display = "block"; // Mostrar a mensagem de erro
+                    }
+                });
+            } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                video.src = videoSrc;
+                video.addEventListener('loadedmetadata', function() {
+                    video.play();
+                    video.volume = 1.0;  // Define o volume no máximo
+                });
+
+                // Verificar erros no vídeo
+                video.addEventListener('error', function() {
+                    video.style.display = "none";
+                    errorMessage.style.display = "block"; // Mostrar a mensagem de erro
+                });
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="title-box">
+        JADIEL TV HD 
+    </div>
+
+    <div class="text-box">
+        CANAL DA REDETV
+    </div>
+
+    <div class="date-time-box" id="date-time">
+        <!-- A data e hora serão atualizadas aqui -->
+    </div>
+
+    <!-- Tela de assistir TV -->
+    <div class="video-box">
+        <video id="video" controls autoplay></video>
+        <div id="error-message" class="error-message">
+            Presta atenção, se o canal não funcionou fale com o desenvolvedor Jadiel para ele resolver, ou espere o site atualizar.
+        </div>
+    </div>
+
+    <!-- Botão de voltar para página -->
+    <div class="button-container">
+        <button class="back-button" onclick="window.history.back();">♻️VOLTA♻️</button>
+    </div>
+
+    <!-- Nova caixa com texto abaixo do botão -->
+    <div class="extra-box">
+        Um canal de TV online que não exige antena nem sinal de TV tradicional, mas apenas uma conexão com a internet. Esses canais podem ser acessados diretamente através de sites ou aplicativos, sem a necessidade de equipamentos adicionais. Aproveite!
+    </div>
+</body>
+</html>
