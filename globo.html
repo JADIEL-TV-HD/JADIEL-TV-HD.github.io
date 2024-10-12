@@ -9,48 +9,28 @@
             margin: 0;
             padding: 0;
             height: 100%;
-            background-color: black; /* Fundo preto */
-            color: white; /* Texto branco */
+            background-color: black;
+            color: white;
             display: flex;
             justify-content: flex-start;
             align-items: center;
             flex-direction: column;
             font-family: Arial, sans-serif;
             overflow-x: hidden;
-            overflow-y: auto; /* Permite rolagem se o conteúdo for maior que a tela */
+            overflow-y: auto;
         }
 
-        .title-box {
-            width: 80%; /* Largura da caixa */
+        .title-box, .text-box, .date-time-box, .extra-box {
+            width: 80%;
             margin-top: 20px;
             padding: 20px;
             text-align: center;
-            font-size: 20px; /* Tamanho do título */
+            font-size: 20px;
             font-weight: bold;
             color: white;
-            background: linear-gradient(to right, green, black); /* Gradiente de verde para preto */
-            border-radius: 5px; /* Bordas arredondadas */
-            position: sticky;
-            top: 0; /* Fixa o título no topo ao rolar a página */
-            z-index: 10;
-            box-shadow: 0 0 15px #00ff00, 0 0 30px #00ff00; /* Aumento do efeito de brilho */
-        }
-
-        .text-box, .date-time-box, .extra-box {
-            width: 80%; /* Largura da caixa */
-            margin-top: 20px;
-            padding: 20px;
-            text-align: center;
-            font-size: 18px; /* Tamanho do texto */
-            font-weight: bold;
-            color: white;
-            background: linear-gradient(to right, green, black); /* Gradiente de verde para preto */
-            border-radius: 5px; /* Bordas arredondadas */
-            box-shadow: 0 0 15px #00ff00, 0 0 30px #00ff00; /* Aumento do efeito de brilho */
-        }
-
-        .date-time-box span {
-            display: block; /* Exibe a data e hora em linhas separadas */
+            background: linear-gradient(to right, green, black);
+            border-radius: 5px;
+            box-shadow: 0 0 15px #00ff00, 0 0 30px #00ff00;
         }
 
         .video-box {
@@ -60,27 +40,10 @@
             position: relative;
         }
 
-        video, .error-message {
+        video {
             width: 100%;
             height: auto;
-            border-radius: 5px; /* Bordas arredondadas para o vídeo */
-        }
-
-        .error-message {
-            display: none; /* A mensagem de erro será oculta inicialmente */
-            background: linear-gradient(to right, green, black); /* Fundo verde e preto */
-            color: white; /* Texto branco */
-            padding: 20px;
-            text-align: center;
-            font-size: 20px; /* Tamanho do texto de erro */
-            font-weight: bold;
             border-radius: 5px;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%); /* Centraliza horizontalmente e verticalmente */
-            width: 80%;
-            box-shadow: 0 0 15px #00ff00, 0 0 30px #00ff00; /* Aumento do efeito de brilho */
         }
 
         .button-container {
@@ -97,8 +60,24 @@
             border-radius: 5px;
             cursor: pointer;
             font-weight: bold;
-            box-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00; /* Efeito de brilho */
+            box-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00;
         }
+
+        .quality-selector {
+            margin-top: 20px;
+            background-color: green;
+            color: white;
+            padding: 10px;
+            font-size: 18px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .date-time-box span {
+            display: block;
+            margin: 10px 0;
+        }
+
     </style>
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <script>
@@ -109,45 +88,49 @@
             document.getElementById('date-time').innerHTML = `<span>🗓️DATA: ${date}</span><span>⏰HORA: ${time}</span>`;
         }
 
-        // Atualiza a cada segundo
         setInterval(updateDateTime, 1000);
 
-        // Função para carregar e reproduzir o vídeo HLS
         window.onload = function() {
             var video = document.getElementById('video');
-            var errorMessage = document.getElementById('error-message');
-            var videoSrc = "https://manifest.googlevideo.com/api/manifest/hls_playlist/expire/1728793335/ei/l_YKZ7SLDqyF1sQPvrKcYQ/ip/190.89.74.219/id/jVOqLQSKU_c.1/itag/91/source/yt_live_broadcast/requiressl/yes/ratebypass/yes/live/1/sgoap/gir%3Dyes%3Bitag%3D139/sgovp/gir%3Dyes%3Bitag%3D160/rqh/1/hdlc/1/hls_chunk_host/rr1---sn-40npvouxaxjvh-nn5e.googlevideo.com/xpc/EgVo2aDSNQ%3D%3D/playlist_duration/30/manifest_duration/30/spc/54MbxXfVL9IRexB24Blo96vASFiDQ_hcBuPd62WI9Rm6kuxjbc2OBvOth0lk/vprv/1/playlist_type/DVR/initcwndbps/705000/met/1728771737,/mh/lZ/mm/44/mn/sn-40npvouxaxjvh-nn5e/ms/lva/mv/m/mvi/1/pcm2cms/yes/pl/24/rms/lva,lva/dover/11/pacing/0/keepalive/yes/fexp/51300760/mt/1728771388/sparams/expire,ei,ip,id,itag,source,requiressl,ratebypass,live,sgoap,sgovp,rqh,hdlc,xpc,playlist_duration,manifest_duration,spc,vprv,playlist_type/sig/AJfQdSswRgIhAIdcYwQesVKOevR8742hbA5qN5zKEwcZ7JkDqEnPugj5AiEAmCgKAeE_xzcNtGC6pDTZLjGlqRVzcB784iLJSQNAyf8%3D/lsparams/hls_chunk_host,initcwndbps,met,mh,mm,mn,ms,mv,mvi,pcm2cms,pl,rms/lsig/ACJ0pHgwRQIgJ-bWdpyGLeCxlpbDoaIOIMoUrbY_f-P0CXq5qCB3bFQCIQD4rOaUJuOgus2swsLVaK4Vt9GakvvXpuimXQdD9Fo-aA%3D%3D/playlist/index.m3u8";
-            
-            if (Hls.isSupported()) {
-                var hls = new Hls();
-                hls.loadSource(videoSrc);
-                hls.attachMedia(video);
-                hls.on(Hls.Events.MANIFEST_PARSED, function() {
-                    video.play();
-                    video.volume = 1.0;  // Define o volume no máximo
+            var videoSrc = "https://manifest.googlevideo.com/api/manifest/hls_playlist/expire/1728794928/ei/0PwKZ8PUA4iOobIPzMyZqAc/ip/190.89.74.219/id/69myRYgyvF4.1/itag/91/source/yt_live_broadcast/requiressl/yes/ratebypass/yes/live/1/sgoap/gir%3Dyes%3Bitag%3D139/sgovp/gir%3Dyes%3Bitag%3D160/rqh/1/hdlc/1/hls_chunk_host/rr2---sn-40npvouxaxjvh-nn5e.googlevideo.com/xpc/EgVo2aDSNQ%3D%3D/spc/54MbxX9yzgfYOH5f_t3Giuo1cc11r0jNfJL0XTg9P0bzIjyGMhF5TZ0HzkXU/vprv/1/playlist_type/LIVE/initcwndbps/717500/met/1728773346,/mh/N1/mm/44/mn/sn-40npvouxaxjvh-nn5e/ms/lva/mv/m/mvi/2/pcm2cms/yes/pl/24/rms/lva,lva/dover/11/pacing/0/keepalive/yes/fexp/51300760/mt/1728773068/sparams/expire,ei,ip,id,itag,source,requiressl,ratebypass,live,sgoap,sgovp,rqh,hdlc,xpc,spc,vprv,playlist_type/sig/AJfQdSswRQIhAL-T8zpJkr3x7phqo6HbMpTod5nFW0mZgaVi8ancRMxSAiBy-ndcfU9z3y3I8MRZZkxhlRZeuSIfkvnJX_nAZceMww%3D%3D/lsparams/hls_chunk_host,initcwndbps,met,mh,mm,mn,ms,mv,mvi,pcm2cms,pl,rms/lsig/ACJ0pHgwRAIgeSBmcsPj7BotoEsCJJXwz3FfPEU106ONK9CeV4wCpekCIFtIJ8YAIAd2nZOHrzjSyHrbTJKt6xHNInefMll616Tt/playlist/index.m3u8";
+            var hls = new Hls();
+            hls.loadSource(videoSrc);
+            hls.attachMedia(video);
+
+            hls.on(Hls.Events.MANIFEST_PARSED, function() {
+                var availableQualities = hls.levels.map((level, index) => ({
+                    level: index,
+                    resolution: level.height + 'p',
+                }));
+
+                createQualitySelector(availableQualities, hls);
+                video.play();
+            });
+
+            function createQualitySelector(qualities, hlsInstance) {
+                var container = document.createElement('div');
+                container.classList.add('quality-selector');
+                container.innerHTML = 'Qualidade:';
+
+                qualities.forEach(function(quality) {
+                    var button = document.createElement('button');
+                    button.innerText = quality.resolution;
+                    button.style.margin = '0 5px';
+                    button.style.padding = '10px';
+                    button.style.backgroundColor = '#00ff00';
+                    button.style.border = 'none';
+                    button.style.cursor = 'pointer';
+
+                    button.addEventListener('click', function() {
+                        hlsInstance.currentLevel = quality.level;
+                    });
+
+                    container.appendChild(button);
                 });
 
-                // Quando ocorrer um erro, mostrar a mensagem de erro
-                hls.on(Hls.Events.ERROR, function(event, data) {
-                    if (data.fatal) {
-                        video.style.display = "none";
-                        errorMessage.style.display = "block"; // Mostrar a mensagem de erro
-                    }
-                });
-            } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-                video.src = videoSrc;
-                video.addEventListener('loadedmetadata', function() {
-                    video.play();
-                    video.volume = 1.0;  // Define o volume no máximo
-                });
-
-                // Verificar erros no vídeo
-                video.addEventListener('error', function() {
-                    video.style.display = "none";
-                    errorMessage.style.display = "block"; // Mostrar a mensagem de erro
-                });
+                document.body.appendChild(container);
             }
-        }
+        };
     </script>
 </head>
 <body>
@@ -166,9 +149,6 @@
     <!-- Tela de assistir TV -->
     <div class="video-box">
         <video id="video" controls autoplay></video>
-        <div id="error-message" class="error-message">
-            Presta atenção, se o canal não funcionou fale com o desenvolvedor Jadiel para ele resolver, ou espere o site atualizar.
-        </div>
     </div>
 
     <!-- Botão de voltar para página -->
@@ -177,24 +157,8 @@
     </div>
 
     <!-- Nova caixa com texto abaixo do botão -->
-<div class="extra-box">
-            Um canal de TV online que não exige antena nem sinal de TV tradicional, mas apenas uma conexão com a internet. Esses canais podem ser acessados diretamente através de sites ou aplicativos.
-        </div>
+    <div class="extra-box">
+        Um canal de TV online que não exige antena nem sinal de TV tradicional, mas apenas uma conexão com a internet.
     </div>
-
-    <style>
-        .extra-box {
-            width: 80%; /* Largura da caixa */
-            margin-top: 20px;
-            padding: 20px;
-            text-align: center;
-            font-size: 18px; /* Tamanho do texto */
-            font-weight: bold;
-            color: white;
-            background: linear-gradient(to right, green, black); /* Gradiente de verde para preto */
-            border-radius: 5px; /* Bordas arredondadas */
-            box-shadow: 0 0 20px #00ff00, 0 0 40px #00ff00; /* Efeito de brilho mais forte */
-        }
-    </style>
 </body>
 </html>
