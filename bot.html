@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>chat jadiel tv hd</title>
+    <style>
+        body {
+            background-color: #000; /* Fundo preto */
+            color: #fff; /* Texto branco */
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            background-color: #222; /* Fundo da barra de título */
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            border-bottom: 2px solid #f00; /* Borda vermelha */
+        }
+        .profile-pic {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 10px;
+            background-image: url('bot.png'); /* Substitua pela URL da imagem */
+            background-size: cover;
+            background-position: center;
+            border: 2px solid #fff; /* Borda branca */
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 18px; /* Tamanho do texto do título */
+        }
+        .status {
+            color: #0f0; /* Cor verde para online */
+            font-size: 14px; /* Tamanho do texto do status */
+            margin-left: 10px;
+        }
+        .chat-container {
+            padding: 10px;
+            height: 400px; /* Altura da caixa de chat */
+            overflow-y: auto; /* Permite rolagem vertical */
+            background-color: #333; /* Fundo da área de chat */
+            border: 2px solid #f00; /* Borda vermelha */
+            border-radius: 5px;
+            margin: 10px; /* Margem da caixa de chat */
+        }
+        .message {
+            background-color: #444; /* Fundo das mensagens */
+            border-radius: 5px;
+            padding: 10px;
+            margin: 5px 0; /* Espaço entre mensagens */
+            color: #fff; /* Texto das mensagens */
+            max-width: 70%; /* Largura máxima da mensagem */
+            word-wrap: break-word; /* Quebra de linha para textos longos */
+        }
+        .typing {
+            color: #aaa; /* Cor para o texto "digitando..." */
+            font-size: 14px; /* Tamanho do texto de digitação */
+        }
+        .footer {
+            display: flex;
+            align-items: center;
+            margin-top: 10px; /* Margem superior do rodapé */
+        }
+        .footer input {
+            flex-grow: 1; /* Faz o input ocupar o espaço restante */
+            padding: 10px;
+            border: 2px solid #fff; /* Borda branca */
+            border-radius: 5px;
+            background-color: #444; /* Fundo do input */
+            color: #fff; /* Texto branco */
+        }
+        .footer button {
+            margin-left: 10px;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #f00; /* Fundo vermelho */
+            color: #fff; /* Texto branco */
+            cursor: pointer;
+        }
+        .footer button:hover {
+            background-color: #c00; /* Efeito hover */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="profile-pic"></div>
+        <h1>Chat</h1>
+        <div class="status">Online</div> <!-- Status do bot -->
+    </div>
+
+    <div class="chat-container" id="chat">
+        <!-- Mensagens serão adicionadas aqui -->
+        <div class="message">Olá! Como posso ajudar você?</div>
+    </div>
+
+    <div class="footer">
+        <input type="text" placeholder="Digite sua mensagem...">
+        <button onclick="enviarMensagem()">Enviar</button>
+    </div>
+
+    <script>
+        function enviarMensagem() {
+            const input = document.querySelector('.footer input');
+            const mensagemPadrao = "O SAITE JADIEL TV HD ESTÁ EM MANUTENÇÃO AGUARDE NO ENTANTO SÓ POSSO LHE DAR ESSA INFORMAÇÃO."; // Mensagem padrão
+            const chat = document.getElementById('chat');
+
+            if (input.value.trim() !== '') { // Verifica se a mensagem não está vazia
+                const digitarMsg = document.createElement('div');
+                digitarMsg.className = 'typing';
+                digitarMsg.textContent = 'Chat digitando...'; // Indica que o bot está digitando
+                chat.appendChild(digitarMsg);
+
+                // Simula o tempo que o bot leva para "digitar"
+                setTimeout(() => {
+                    chat.removeChild(digitarMsg); // Remove o indicador de digitação
+                    const novaMensagem = document.createElement('div');
+                    novaMensagem.className = 'message';
+                    novaMensagem.textContent = mensagemPadrao; // Envia a mensagem padrão
+                    chat.appendChild(novaMensagem);
+                    input.value = ''; // Limpa o campo de entrada
+                    chat.scrollTop = chat.scrollHeight; // Rola para a última mensagem
+                }, 2000); // Tempo em milissegundos (2 segundos)
+            }
+        }
+    </script>
+
+</body>
+</html>
