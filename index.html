@@ -1,155 +1,117 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página com fundo preto e caixas</title>
+    <title>jadiel tv hd erro</title>
     <style>
-        body, html {
+        body {
+            background-color: #121212;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            text-align: center;
             margin: 0;
             padding: 0;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            background-color: black; /* Fundo preto */
-            color: white; /* Texto branco */
-        }
-        .title-bar {
-            width: 80%; /* Largura da caixa do título */
-            margin: 20px auto; /* Centralização da caixa */
-            border-radius: 5px; /* Borda arredondada */
-            background: linear-gradient(to right, green, black); /* Gradiente do título */
-            padding: 10px;
-            text-align: center;
-            font-size: 24px;
-            font-weight: bold;
-            box-shadow: 0 0 25px lime, 0 0 50px lime; /* Efeito de brilho verde */
-        }
-
-        .dual-color-box {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 20px auto;
-            padding: 10px;
-            border: 2px solid #333;
-            font-size: 18px;
-            font-weight: bold;
-            width: 80%; /* Definindo a largura das caixas */
-            box-shadow: 0 0 25px lime, 0 0 50px lime; /* Efeito de brilho verde */
+            position: relative;
         }
         .box {
+            width: 80%; /* Ajuste a largura para centralizar melhor */
+            max-width: 600px; /* Largura máxima para as caixas */
+            padding: 20px;
+            background: linear-gradient(to right, red, black);
+            color: white;
+            font-size: 2em;
+            text-align: center;
+            font-weight: bold;
+            border: 2px solid red;
+            box-shadow: 0 0 15px red;
+            animation: glow 1.5s infinite alternate;
+            margin: 20px auto; /* Centraliza as caixas */
+        }
+
+        @keyframes glow {
+            from {
+                box-shadow: 0 0 10px red;
+            }
+            to {
+                box-shadow: 0 0 30px red, 0 0 60px red;
+            }
+        }
+
+        .image-box {
+            width: 80%; /* Ajuste a largura para centralizar melhor */
+            max-width: 600px; /* Largura máxima para a caixa da imagem */
+            padding: 20px;
+            background: linear-gradient(to right, red, black);
+            border: 2px solid red;
+            box-shadow: 0 0 15px red;
+            animation: glow 1.5s infinite alternate;
+            position: fixed;
+            top: 30%; /* Ajuste a posição da imagem */
+            left: 50%;
+            transform: translateX(-50%); /* Centraliza horizontalmente */
+            z-index: 1000;
+        }
+
+        .image-box img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+
+        h1 {
+            margin-top: 60%;
+            font-size: 3em;
+        }
+
+        p {
+            font-size: 1.2em;
+            margin: 20px;
+        }
+
+        /* Estilo do botão de suporte */
+        .support-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: red;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
             display: flex;
-            width: 100%; /* A caixa ocupa toda a largura */
-            background: linear-gradient(to right, green, black); /* Gradiente de verde para preto */
             justify-content: center;
             align-items: center;
-            padding: 20px;
-            border-radius: 5px; /* Borda arredondada */
-            box-shadow: 0 0 25px lime, 0 0 50px lime; /* Efeito de brilho verde */
-        }
-        .video-container {
-            margin: 20px auto;
-            text-align: center;
-            width: 80%; /* Definindo a largura do vídeo */
-        }
-        video {
-            width: 100%;
-            height: auto;
-        }
-        .button-container {
-            text-align: center;
-            margin: 20px auto;
-        }
-        .color-button {
-            background: linear-gradient(to right, green, black); /* Gradiente verde e preto */
-            border: none;
-            color: white; /* Texto branco */
-            padding: 10px 20px;
-            font-size: 18px; /* Tamanho da fonte igual ao das caixas */
-            font-weight: bold; /* Negrito igual ao das caixas */
+            box-shadow: 0 0 15px red;
             cursor: pointer;
-            border-radius: 5px;
-            width: 80%; /* Largura igual às caixas */
-            max-width: 300px; /* Limite de largura do botão */
-            box-shadow: 0 0 25px lime, 0 0 50px lime; /* Efeito de brilho verde */
+            animation: glow 1.5s infinite alternate;
+            z-index: 1000;
         }
-        .fixed-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            overflow: auto;
-        }
-        .color-button:hover {
-            background: linear-gradient(to right, black, green); /* Inverte as cores no hover */
-            box-shadow: 0 0 30px lime, 0 0 60px lime; /* Aumenta o brilho no hover */
+
+        .support-button img {
+            width: 30px; /* Ajuste o tamanho do ícone */
+            height: 30px;
         }
     </style>
 </head>
 <body>
-    <div class="fixed-container">
-        <div class="title-bar">
-            JADIEL TV HD
-        </div>
-        <div class="dual-color-box">
-            <div class="box">
-             ♻️Olá seja bem-vindo ao site de assistir tv em HD, Assista o vídeo abaixo dando player.
-            </div>
-        </div>
-        <div class="video-container">
-            <video controls autoplay> <!-- Removido o atributo muted -->
-                <source src="video.mp4" type="video/mp4">
-                Seu navegador não suporta a tag de vídeo.
-            </video>
-        </div>
-        <div class="dual-color-box">
-            <div class="box">
-                ⚠️O saite Jadiel tv hd que protege seus dados o saite não viola nenhum termo do Google, o saite não viola nada o site e confiável,Abaixo tem o botão de acesso e só aperta e começa assistir em hd.
-            </div>
-        </div>
-        <div class="button-container">
-            <a href="site.html">
-                <button class="color-button">[ENTRAR]</button>
-            </a>
-        </div>
-        <div class="dual-color-box">
-            <div class="box">A TV online é um serviço que permite aos usuários assistir a conteúdos televisivos pela internet, em vez de depender de sinais de transmissão tradicionais ou de provedores de TV a cabo. Através de um site, os espectadores podem acessar uma variedade de canais ao vivo, programas sob demanda, filmes e séries, tudo diretamente do navegador ou por meio de aplicativos específicos.
 
-Essas plataformas oferecem flexibilidade, permitindo que os usuários assistam ao que desejam, quando desejam, com a conveniência de dispositivos como computadores, tablets e smartphones. Além disso, muitos serviços de TV online incluem recursos interativos, como a possibilidade de pausar, retroceder e avançar programas, bem como acesso a conteúdos exclusivos.
+    <div class="box">JADIEL TV HD</div>
 
-A popularidade da TV online cresceu significativamente nos últimos anos, impulsionada pela evolução da tecnologia de streaming e pela demanda por experiências de visualização personalizadas. Com essa mudança, os espectadores têm mais opções do que nunca para se manterem conectados ao que amam assistir, tudo a partir da comodidade de suas casas.
+    <div class="box">ERRO🚫</div>
 
-</div>
-        </div>
-        <div class="button-container">
-            <a href="link_para_outra_pagina.html">
-                <button class="color-button">[CANAL DO TELEGRAM]</button>
-            </a>
-        </div>
+    <!-- Terceira caixa para a imagem com posição fixa -->
+    <div class="image-box">
+        <img src="erro.png" alt="Imagem">
     </div>
 
-    <audio id="typing-sound" src="typing.mp3" preload="auto"></audio> <!-- Adiciona o áudio -->
+    
+    <!-- Botão de suporte -->
+    <a href="bot.html" class="support-button">
+        <img src="bot.png" alt="Suporte">
+    </a>
 
-    <script>
-        const text = "Bem-vindo à JADIEL TV HD! Estamos transmitindo ao vivo!"; // Texto a ser digitado
-        const typingBox = document.getElementById('typing-box');
-        const typingSound = document.getElementById('typing-sound');
-        let index = 0;
-
-        function type() {
-            if (index < text.length) {
-                typingBox.innerHTML += text.charAt(index);
-                typingSound.currentTime = 0; // Reinicia o áudio
-                typingSound.play(); // Reproduz o áudio
-                index++;
-                setTimeout(type, 100); // A cada 100ms, adiciona uma letra
-            }
-        }
-
-        // Iniciar a digitação automática
-        type();
-    </script>
 </body>
 </html>
